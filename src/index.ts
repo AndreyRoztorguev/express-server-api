@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { uploadRouter } from "./routes/upload";
+import errorHandler from "./middlewares/errorHandler";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/upload", uploadRouter);
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
