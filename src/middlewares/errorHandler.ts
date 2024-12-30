@@ -1,11 +1,13 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { HttpError } from "http-errors";
+import { logger } from "../lib/winston";
 
-const errorHandler = (err: HttpError, req: Request, res: Response): void => {
-  //   console.error(err); // Log the error details (for debugging purposes)
+// parameter next is required
+const errorHandler = (err: HttpError, req: Request, res: Response, _next: NextFunction): void => {
+  logger.error(`Error: ${err.message}\nStack: ${err.stack}`);
   res.status(err.statusCode).json({
     success: false,
-    message: err.message || "Something went wrong!",
+    message: err.message,
     stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
   });
 };

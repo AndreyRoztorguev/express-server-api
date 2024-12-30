@@ -1,15 +1,17 @@
 import { NextFunction, Request, Response } from "express";
-import createHttpError from "http-errors";
+import { BadRequest, HttpError } from "http-errors";
 
 class UploadController {
   async uploadImage(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      if (!req.file) {
-        throw createHttpError(404, "No file uploaded.");
+      if (req.file) {
+        throw new BadRequest("No file uploaded.");
       }
       res.json({ message: "Upload successful!" });
     } catch (error: unknown) {
-      next(error);
+      if (error instanceof HttpError) {
+        next(error);
+      }
     }
   }
 }

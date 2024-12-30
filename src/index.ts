@@ -1,10 +1,9 @@
-import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+dotenv.config(); // important use dotenv before imports your own modules
+import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import { uploadRouter } from "./routes/upload";
 import errorHandler from "./middlewares/errorHandler";
-
-dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -18,7 +17,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/upload", uploadRouter);
-app.use(errorHandler);
+app.use(errorHandler); // error middleware has to be the last middleware
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
